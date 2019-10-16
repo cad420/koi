@@ -12,6 +12,7 @@
 #include "utils/shared.hpp"
 #include "utils/then.hpp"
 #include "utils/join.hpp"
+#include "utils/gather.hpp"
 #include "utils/stream_poll_fn.hpp"
 
 namespace koi
@@ -23,6 +24,8 @@ using utils::Async;
 #endif
 using utils::lazy;
 using utils::poll_fn;
+using utils::sink;
+using utils::stream_poll_fn;
 
 }  // namespace future
 
