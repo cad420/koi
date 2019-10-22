@@ -12,22 +12,31 @@ namespace _
 using namespace std;
 using namespace traits::concepts;
 
-struct Bomb final : NoCopy, NoMove, NoHeap
+template <typename F>
+struct Bomb final : NoCopy, NoHeap
 {
-	Bomb( function<void()> &&fn ) :
+	Bomb( F &&fn ) :
 	  fn( std::move( fn ) )
 	{
 	}
+	Bomb( Bomb && ) = default;
+	Bomb &operator=( Bomb && ) = default;
 
 	~Bomb() { fn(); }
 
 private:
-	function<void()> fn;
+	F fn;
 };
+
+template <typename F>
+auto make_bomb( F &&fn )
+{
+	return Bomb<F>( std::forward<F>( fn ) );
+}
 
 }  // namespace _
 
-using _::Bomb;
+using _::make_bomb;
 
 }  // namespace utils
 
