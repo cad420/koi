@@ -17,10 +17,11 @@ struct Sink;
 
 struct SinkHandle
 {
-	SinkHandle():
-		err(false),
-		left(0)
-	{}
+	SinkHandle() :
+	  err( false ),
+	  left( 0 )
+	{
+	}
 
 private:
 	template <typename Self>

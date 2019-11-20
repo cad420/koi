@@ -1,6 +1,6 @@
 # Koi
 
-[![Build Status](https://dev.azure.com/qwq0433/qwq/_apis/build/status/xlnx.koi?branchName=master)](https://dev.azure.com/qwq0433/qwq/_build/latest?definitionId=1&branchName=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/cad420/koi/badge)](https://www.codefactor.io/repository/github/cad420/koi) [![Build Status](https://dev.azure.com/qwq0433/qwq/_apis/build/status/xlnx.koi?branchName=master)](https://dev.azure.com/qwq0433/qwq/_build/latest?definitionId=1&branchName=master)
 
 Koi is an c++14 async execution library based on libuv, inspired by **tokio**. 
 

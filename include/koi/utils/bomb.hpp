@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <traits/concepts.hpp>
 
 namespace koi
