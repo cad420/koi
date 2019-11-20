@@ -20,7 +20,7 @@ if (KOI_BUILD_TESTS)
   enable_testing()
   cmake_policy(SET CMP0057 NEW)
 
-  add_subdirectory("${CMAKE_SOURCE_DIR}/third_party/googletest")
+  # add_subdirectory("${CMAKE_SOURCE_DIR}/third_party/googletest")
   
   file(GLOB_RECURSE test_sources 
 	tests/**/*.cc

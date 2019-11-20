@@ -8,6 +8,7 @@
 #ifndef KOI_NO_LIBUV_REACTOR
 #include <reactor/reactor.hpp>
 #endif
+#include <sync/mutex.hpp>
 #include <sync/queue.hpp>
 #include <future/future.hpp>
 #include <executor/executor.hpp>
@@ -36,7 +37,7 @@ struct Runtime;
 
 struct Inner
 {
-	list<Box<Future<>>> tasks;
+	Mutex<list<Box<Future<>>>> tasks;
 };
 
 struct Scheduler
@@ -48,8 +49,8 @@ struct Scheduler
 	size_t tick()
 	{
 		size_t nfut = 0;
-		auto &tasks = _->tasks;
-		for ( auto itr = tasks.begin(); itr != tasks.end(); ) {
+		auto tasks = _->tasks.lock();
+		for ( auto itr = tasks->begin(); itr != tasks->end(); ) {
 			switch ( ( *itr )->poll() ) {
 			case PollState::Pending:
 				++itr;
@@ -57,12 +58,12 @@ struct Scheduler
 			case PollState::Ok:
 				nfut++;
 			case PollState::Pruned:
-				itr = tasks.erase( itr );
+				itr = tasks->erase( itr );
 			}
 		}
 		return nfut;
 	}
-	bool idle() const { return _->tasks.empty(); }
+	bool idle() const { return _->tasks.lock()->empty(); }
 
 	//private:
 	Arc<Inner> _ = Arc<Inner>( new Inner );
@@ -74,7 +75,7 @@ struct Executor final : executor::Executor
 
 	void spawn( Box<Future<>> &&future ) override
 	{
-		scheduler._->tasks.emplace_back( std::move( future ) );
+		scheduler._->tasks.lock()->emplace_back( std::move( future ) );
 		scheduler.schedule( std::move( future ) );
 	}
 	void run( nanoseconds const *timeout = nullptr )

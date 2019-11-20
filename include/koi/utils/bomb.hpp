@@ -12,10 +12,15 @@ using namespace std;
 using namespace traits::concepts;
 
 template <typename F>
-struct Bomb final : NoCopy, NoMove, NoHeap
+struct Bomb final : NoHeap
 {
 	Bomb( F &&fn ) :
 	  fn( std::move( fn ) ) {}
+	
+	Bomb(const Bomb &) = delete;
+	Bomb(Bomb &&) = default;
+	Bomb & operator=(const Bomb &) = delete;
+	Bomb & operator=(Bomb &&) = default;
 
 	~Bomb() { fn(); }
 
@@ -26,7 +31,7 @@ private:
 template <typename F>
 auto make_bomb( F &&fn )
 {
-	return Bomb( std::forward<F>( fn ) );
+	return Bomb<F>( std::forward<F>( fn ) );
 }
 
 }  // namespace _

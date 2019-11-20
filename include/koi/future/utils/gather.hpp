@@ -17,13 +17,18 @@ struct Sink;
 
 struct SinkHandle
 {
+	SinkHandle():
+		err(false),
+		left(0)
+	{}
+
 private:
 	template <typename Self>
 	friend struct Gather;
 	friend struct Sink;
 
-	atomic<bool> err = false;
-	atomic<size_t> left = 0;
+	atomic<bool> err;
+	atomic<size_t> left;
 };
 
 struct Sink : Future<bool>

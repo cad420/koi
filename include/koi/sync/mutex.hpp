@@ -75,7 +75,7 @@ struct Mutex final
 	}
 
 private:
-	mutable mutex lk;
+	mutable recursive_mutex lk;
 	mutable T _;
 	template <typename U>
 	friend struct MutexGuard;

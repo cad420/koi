@@ -50,7 +50,9 @@ struct Slab final : ExplicitCopy
 	using Index = _::Index;
 
 	Slab( size_t reserve ) :
-	  _( reserve ) {}
+	  _( reserve ),
+	  ent(0)
+	{}
 
 	template <typename... Args>
 	Index emplace( Args &&... args )
@@ -101,7 +103,7 @@ struct Slab final : ExplicitCopy
 private:
 	vector<Cell<T>> _;
 	Index len = 0;
-	std::atomic<std::size_t> ent = 0;
+	std::atomic<std::size_t> ent;
 	Index next = Null();
 };
 
